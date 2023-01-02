@@ -5,6 +5,9 @@
 
 #pragma comment(lib, "imm32")
 
+#define GET_CONVERSION_STATUS 0x0001
+#define SET_CONVERSION_STATUS 0x0002
+
 using namespace std;
 
 int main(int argc, char** argv)
@@ -12,26 +15,12 @@ int main(int argc, char** argv)
 	HWND hIME = ImmGetDefaultIMEWnd(GetForegroundWindow());
 
 	if (argc == 1) {
-		LRESULT status = SendMessage(hIME, WM_IME_CONTROL, 0x0001, 0);
+		LRESULT status = SendMessage(hIME, WM_IME_CONTROL, GET_CONVERSION_STATUS, 0);
 		printf("%d\n", status);
 	}
 	else {
-		int conversion_status = atoi(argv[1]);
-		LRESULT status = SendMessage(hIME, WM_IME_CONTROL, 0x0002, conversion_status);
+		LRESULT status = SendMessage(hIME, WM_IME_CONTROL, SET_CONVERSION_STATUS, atoi(argv[1]));
 	}
-
-	// read
-	//LRESULT status = SendMessage(hIME, WM_IME_CONTROL, 0x0001, 0);
-	//cout << (status ? "Korean" : "English") << endl;
-	//cout << status << endl;
-
-	// change to english
-	//LRESULT status = SendMessage(hIME, WM_IME_CONTROL, 0x0002, 0);
-	//cout << (status ? "Korean" : "English") << endl;
-
-	// change to korean
-	//LRESULT status = SendMessage(hIME, WM_IME_CONTROL, 0x0002, 1);
-	//cout << (status ? "Korean" : "English") << endl;
 
 	return 0;
 }
